@@ -1,3 +1,4 @@
+
 package MyNotes.servlets;
 import java.util.*;
 
@@ -180,10 +181,11 @@ public class AddCard extends HttpServlet
       String boardName ="";
       String taskName = "";
       String description = "";
-      int day = "";
-      int month = "";
-      int year = "";
-      String query = "";
+      int day = 0;
+      int month = 0;
+      int year = 0;
+      String newQuery = "";
+      int creationID = -1;
 
       boardName = req.getParameterValues("boardname")[0];
       taskName = req.getParameterValues("taskname")[0];
@@ -194,33 +196,33 @@ public class AddCard extends HttpServlet
 
       OracleConnect oracle = new OracleConnect();
       Connection conn;
-        try{
-            Class.forName("oracle.jdbc.OracleDriver");
-            conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
-            if (conn == null)
-                throw new Exception("getConnection failed");
-            try{
+      try{
+          Class.forName("oracle.jdbc.OracleDriver");
+          conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
+          if (conn == null)
+            throw new Exception("getConnection failed");
+          try{
                conn.setAutoCommit(true);
                //need to get creation ID from Board
-               int creationID = -1;
-               query = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
+              
+               newQuery = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
 
                Statement creationQuery = conn.createStatement();
                ResultSet result;
-               result = creationQuery.executeQuery(query);
+               result = creationQuery.executeQuery(newQuery);
                if (result.next() == false){
                      System.out.println("Board does not exist");
                }
                else{
                      creationID = result.getInt(1);
                }
-            }catch(SQLException excep){
+          }catch(SQLException excep){
                System.err.print("CreationID catch");
-            }
+          }
                 //need to insert into board
-               if (creationID != -1){
-                  insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                   try{
+          if (creationID != -1){
+               String insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
+               try{
                         PreparedStatement query = null;
                         query = conn.prepareStatement(insertCard);
                         query.setString(1, boardName);
@@ -233,7 +235,7 @@ public class AddCard extends HttpServlet
                         query.executeUpdate();
                         conn.commit();
                         System.out.println("Card added!");
-                  } catch(SQLException e){
+               } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
                            System.out.println("Card already exists!");
                            break;
@@ -245,13 +247,13 @@ public class AddCard extends HttpServlet
                         }catch(SQLException excep){
                            System.err.print("ERR");
                         }
-                  }
+               }
 
-         }
-         catch(SQLException excep){
-            System.err.print("ERR ON LARGE CATCH");
-         }
+          }
+       }catch(SQLException excep){
+          System.err.print("ERR ON LARGE CATCH");
+       }
       
 
    }
-}
+  }
