@@ -73,22 +73,22 @@ public class FindBoards extends HttpServlet
 
 
 
-   public void drawShowInfo(HttpServletRequest req, PrintWriter out)
+   public void drawShowInfo(HttpServletRequest req, PrintWriter out, HttpServletResponse response)
    {
       String numUsers = req.getParameter("numUsers");
-      
+      int num = -1;
       try{
-         int num = Integer.parseInt(numUsers);
+         num = Integer.parseInt(numUsers);
       }catch(NumberFormatException e){
          System.err.print("Error: Request could not be carried out");
-         HttpServletResponse response = new HttpServletResponse();
-         response.sendRedirect("index.html");
+         response.setStatus(HttpServletResponse.SC_FOUND);
+         response.setHeader("Location", "index.html");
 
       }
       if (num < 0){
          System.err.print("Error: Request could not be carried out");
-         HttpServletResponse response = new HttpServletResponse();
-         response.sendRedirect("index.html");
+         response.setStatus(HttpServletResponse.SC_FOUND);
+         response.setHeader("Location", "index.html");
 
       }
       
@@ -151,7 +151,7 @@ public class FindBoards extends HttpServlet
       }
       else
       {
-         drawShowInfo(req,out);
+         drawShowInfo(req,out, res);
          System.out.println("CSC460: inside doGet FindCommonPlaces____" + req.getParameter("numUsers") +"___");
       }
 
