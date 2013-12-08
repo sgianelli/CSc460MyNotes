@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app
+     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app> 
+    <!-- Define servlets that are included in the example application -->
+ 
+    <servlet>
+        <servlet-name>AddCard</servlet-name>
+        <servlet-class>MyNotes.servlets.AddCard</servlet-class>
+    </servlet>
+    <servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>MyNotes.servlets.LoginServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AddProfileInformation</servlet-name>
+		<servlet-class>MyNotes.servlets.AddProfileInformation</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>FindBoards</servlet-name>
+		<servlet-class>MyNotes.servlets.FindBoards</servlet-class>
+	</servlet>
+
+	<!--Map paths for servlets in the application-->
+
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/LoginServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AddProfileInformation</servlet-name>
+		<url-pattern>/AddProfileInformation</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FindBoards</servlet-name>
+		<url-pattern>/FindBoards</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCard</servlet-name>
+        <url-pattern>/AddCard</url-pattern>
+    </servlet-mapping> 
+   
+
+</web-app>
