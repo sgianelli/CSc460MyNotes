@@ -216,6 +216,7 @@ public class AddCard extends HttpServlet
                     }
                 }catch(SQLException excep){
                     System.err.print("CreationID catch");
+                    System.err.print(excep);
                 }
                 //need to insert into board
                 if (creationID != -1){
