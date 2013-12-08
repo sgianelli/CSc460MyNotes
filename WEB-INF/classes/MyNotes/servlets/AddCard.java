@@ -207,7 +207,7 @@ public class AddCard extends HttpServlet
 
                     query = conn.prepareStatement(newQuery);
                     ResultSet result;
-                    result = creationQuery.executeQuery();
+                    result = query.executeQuery();
                     if (result.next() == false){
                         out.println("Board does not exist");
                     }
