@@ -160,7 +160,7 @@ public class AddCard extends HttpServlet
    }
 
 
-   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, Exception
+   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, 
    {
       res.setContentType("text/html");
       PrintWriter out = res.getWriter();
@@ -200,7 +200,7 @@ public class AddCard extends HttpServlet
           Class.forName("oracle.jdbc.OracleDriver");
           conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
           if (conn == null)
-            throw new Exception("getConnection failed");
+            throw new IOException("getConnection failed");
           try{
                conn.setAutoCommit(true);
                //need to get creation ID from Board
