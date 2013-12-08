@@ -204,18 +204,20 @@ public class AddCard extends HttpServlet
           try{
                conn.setAutoCommit(true);
                //need to get creation ID from Board
-              out.println("Connection Made")
-               newQuery = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
-
+               PreparedStatement query = null;
+              
+               newQuery = "SELECT CreationID FROM Board WHERE BoardName = ?";
+               query = conn.prepareStatement(newQuery);
+               query.setString(boardName);
                Statement creationQuery = conn.createStatement();
                ResultSet result;
-               result = creationQuery.executeQuery(newQuery);
+               result = query.executeQuery();
                if (result.next() == false){
                      System.out.println("Board does not exist");
                }
                else{
                      creationID = result.getInt(1);
-                     out.println("Board exists");
+                   
                }
           }catch(SQLException excep){
                System.err.print("CreationID catch");
@@ -224,7 +226,7 @@ public class AddCard extends HttpServlet
           if (creationID != -1){
                String insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
                try{
-                        PreparedStatement query = null;
+                        
                         query = conn.prepareStatement(insertCard);
                         query.setString(1, boardName);
                         query.setString(2, taskName);
