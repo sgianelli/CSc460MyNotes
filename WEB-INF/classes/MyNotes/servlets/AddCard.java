@@ -143,7 +143,7 @@ public class AddCard extends HttpServlet
 
         out.println("<tr>");
         out.println("<td>");
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
         out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
         out.println("</form>");
         out.println("</p>");
@@ -178,10 +178,36 @@ public class AddCard extends HttpServlet
             boardName = req.getParameterValues("boardname")[0];
             taskName = req.getParameterValues("taskname")[0];
             description = req.getParameterValues("description")[0];
-            day = Integer.parseInt(req.getParameterValues("day")[0]);
-            month = Integer.parseInt(req.getParameterValues("month")[0]);
-            year = Integer.parseInt(req.getParameterValues("year")[0]);
-
+            try{
+                day = Integer.parseInt(req.getParameterValues("day")[0]);
+                if (day < 1 || day > 31){
+                    out.print("Invalid day - please input an integer value between 1 and 31");
+                    drawAddCardInformationMenu(req, out);
+                }
+            }catch (NumberFormatException e){
+                out.print("Invalid day - please input an integer value");
+                drawAddCardInformationMenu(req, out);
+            }
+            try{
+                month = Integer.parseInt(req.getParameterValues("month")[0]);
+                if (month < 1 || month > 12){
+                    out.print("Invalid month - please input an integer value between 1 and 12");
+                    drawAddCardInformationMenu(req, out);
+                }
+            }catch(NumberFormatException e){
+                out.print("Invalid month - please input an integer value");
+                drawAddCardInformationMenu(req, out);
+            }
+            try {
+                year = Integer.parseInt(req.getParameterValues("year")[0]);
+                if (year < 2013){
+                   out.print("Invalid year- please input an integer value greater than or equal to 2013");
+                    drawAddCardInformationMenu(req, out); 
+                }
+            }catch(NumberFormatException e){
+                out.print("Invalid year - please input an integer value");
+                drawAddCardInformationMenu(req, out);
+            }
             OracleConnect oracle = new OracleConnect();
             Connection conn;
             PreparedStatement query = null;
@@ -250,6 +276,7 @@ public class AddCard extends HttpServlet
                 }
 
                 drawUpdateMessage(req,out, boardName, taskName, creationID, day, month, year, description);
+                conn.close();
             }catch(SQLException excep){
                 System.err.print("ERR ON LARGE CATCH");
             }

@@ -45,7 +45,7 @@ public class FindBoards extends HttpServlet
       out.println("</p>");
 
       out.println("<p>");
-      out.println("<form name=\"logout\" action=index.html>");
+      out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
       out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
       out.println("</form>");
       out.println("</p>");
@@ -73,22 +73,22 @@ public class FindBoards extends HttpServlet
 
 
 
-   public void drawShowInfo(HttpServletRequest req, PrintWriter out)
+   public void drawShowInfo(HttpServletRequest req, PrintWriter out, HttpServletResponse response) throws IOException
    {
       String numUsers = req.getParameter("numUsers");
-      
+      int num = -1;
       try{
-         int num = Integer.parseInt(numUsers);
+         num = Integer.parseInt(numUsers);
       }catch(NumberFormatException e){
          System.err.print("Error: Request could not be carried out");
-         HttpServletResponse response = new HttpServletResponse();
-         response.sendRedirect("index.html");
+         response.setStatus(HttpServletResponse.SC_FOUND);
+         response.setHeader("Location", "index.html");
 
       }
       if (num < 0){
          System.err.print("Error: Request could not be carried out");
-         HttpServletResponse response = new HttpServletResponse();
-         response.sendRedirect("index.html");
+         response.setStatus(HttpServletResponse.SC_FOUND);
+         response.setHeader("Location", "index.html");
 
       }
       
@@ -108,7 +108,7 @@ public class FindBoards extends HttpServlet
             throw new IOException("getConnection failed");
          try{
             conn.setAutoCommit(true);
-            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
+            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY Board.BoardName) WHERE UserEmail <= ?";
 
                     query = conn.prepareStatement(newQuery);
                     query.setInt(1, num);
@@ -126,10 +126,12 @@ public class FindBoards extends HttpServlet
                         }
                         
                     }
-                }catch(SQLException excep){
+
+                    conn.close();
+         }catch(SQLException excep){
                     System.err.print("Get boards catch\n");
                     System.err.print(excep);
-                }
+         }
       }catch(SQLException except){
          System.err.print("Outer catch block: " + except);
       }
@@ -151,7 +153,7 @@ public class FindBoards extends HttpServlet
       }
       else
       {
-         drawShowInfo(req,out);
+         drawShowInfo(req,out, res);
          System.out.println("CSC460: inside doGet FindCommonPlaces____" + req.getParameter("numUsers") +"___");
       }
 
