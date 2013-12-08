@@ -189,6 +189,7 @@ public class AddCard extends HttpServlet
 
             OracleConnect oracle = new OracleConnect();
             Connection conn;
+            PreparedStatement query = null;
             try{
                 try{
                     Class.forName("oracle.jdbc.OracleDriver");
@@ -202,13 +203,13 @@ public class AddCard extends HttpServlet
                     conn.setAutoCommit(true);
                     //need to get creation ID from Board
                     out.println("Connection Made");
-                    newQuery = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
+                    newQuery = "SELECT CreationID FROM Board WHERE BoardName = ?";
 
-                    Statement creationQuery = conn.createStatement();
+                    query = conn.prepareStatement(newQuery);
                     ResultSet result;
-                    result = creationQuery.executeQuery(newQuery);
+                    result = creationQuery.executeQuery();
                     if (result.next() == false){
-                        System.out.println("Board does not exist");
+                        out.println("Board does not exist");
                     }
                     else{
                         creationID = result.getInt(1);
@@ -222,7 +223,7 @@ public class AddCard extends HttpServlet
                 if (creationID != -1){
                     String insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try{
-                        PreparedStatement query = null;
+                        
 
                         query = conn.prepareStatement(insertCard);
                         query.setString(1, boardName);
@@ -234,10 +235,10 @@ public class AddCard extends HttpServlet
                         query.setInt(7, year);
                         query.executeUpdate();
                         conn.commit();
-                        System.out.println("Card added!");
+                        out.println("Card added!");
                     } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
-                            System.out.println("Card already exists!");
+                            out.println("Card already exists!");
 
                         }
                         else if (conn != null){
