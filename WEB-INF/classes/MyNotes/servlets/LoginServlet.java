@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet
         out.println("<font size=7 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         out.println("<center>\n<strong>MyNotes</strong></br>");
         out.println("<font size=4>MyNotes: a UA Project Management Program");
+        out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
         out.println("</center>\n<hr color=\"#000066\">");
         out.println("<br><br>");
 
@@ -65,7 +66,7 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
         out.println("<input type=submit name=\"logoutMyNotes\" value=\"Log out\">");
         out.println("</form>");
     }
@@ -106,8 +107,6 @@ public class LoginServlet extends HttpServlet
         drawFailOptions(req,out,correctEmail);
         drawFooter(req,out);
     }
-
-    private static Connection conn;
 
     private boolean checkEmail(String email) {
         try {
@@ -174,11 +173,25 @@ public class LoginServlet extends HttpServlet
         return false;
     }
 
-    public void storeCredentials(HttpServletRequest req, String email, String username) {
+    private void storeCredentials(HttpServletRequest req, String email, String username) {
         HttpSession session = req.getSession();
 
         session.setAttribute("email", email);
         session.setAttribute("username", username);
+    }
+
+    private void redirectOutsiders(HttpServletRequest req, HttpServletResponse res) {
+        HttpSession session = req.getSession();
+
+        System.out.println("--- Session: " + session.getAttribute("email") + " -- " + session.getAttribute("username"));
+
+        if (session.getAttribute("email") == null || session.getAttribute("username") == null) {
+            session.setAttribute("email", null);
+            session.setAttribute("username", null);
+
+            res.setStatus(HttpServletResponse.SC_FOUND);
+            res.setHeader("Location", "/MyNotes");
+        }
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -186,19 +199,27 @@ public class LoginServlet extends HttpServlet
         PrintWriter out = res.getWriter();
 
         if (req.getParameter("MainMenu") != null) {
+            redirectOutsiders(req, res);
+
             drawLoginSuccess(req,out);
         } else {
-            String username = req.getParameter("password").toString();
-            String email = req.getParameter("email").toString();
+            String username = req.getParameter("password");
+            String email = req.getParameter("email");
 
+            if (username == null || email == null) {
+                res.setStatus(HttpServletResponse.SC_FOUND);
+                res.setHeader("Location", "/MyNotes");
+            } else {
+                if (checkEmail(email)) {
+                    if (checkUsername(email, username)) {
+                        storeCredentials(req, email, username);
 
-            if (checkEmail(email)) {
-                if (checkUsername(email, username))
-                    drawLoginSuccess(req,out);
-                else
-                    drawLoginFail(req,out,true);
-            } else
-                drawLoginFail(req,out,false);
+                        drawLoginSuccess(req,out);
+                    } else
+                        drawLoginFail(req,out,true);
+                } else
+                    drawLoginFail(req,out,false);
+            }
         }
     }
 }

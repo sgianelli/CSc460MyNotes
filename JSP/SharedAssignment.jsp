@@ -1,4 +1,15 @@
 <%@ page language="java" contentType="text/html" %>
+<%@ page import="MyNotes.utils.*,java.sql.*,java.utils.*" %>
+
+<%
+    if (session.getAttribute("email") == null || session.getAttribute("username") == null) {
+        session.setAttribute("email", null);
+        session.setAttribute("username", null);
+
+        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setHeader("Location", "/MyNotes");
+    }
+%>
 
 <html>
 
@@ -10,6 +21,7 @@
             <b>MyNotes</b><br>
             <font size=4>
                 MyNotes: a UA Project Management Program</br>
+                Hello, <% out.println(session.getAttribute("username"));%>!</br>
             </font>
             </font>
             <hr>
@@ -18,12 +30,51 @@
             <b>Users who share the same card:</b>
             <br>
         <%
-                String name1 = "Jean-Pierre";
-                String name2 = "Rick Snodgrass";
-		String card1 = "Learn French";
-                String name3 = "Bill Gates";
-                String name4 = "Steve Jobs";
-		String card2 = "Make the Big Bucks";
+                String html = "";
+
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Connection conn = DriverManager.getConnection(OracleConnect.connect_string, OracleConnect.user_name, OracleConnect.password);
+
+                    if (conn == null)
+                        throw new Exception("getConnection failed");
+
+                    try {
+                        conn.setAutoCommit(true);
+
+                        String query =  "SELECT DISTINCT c.BoardName, c.TaskName, a.UserEmail, u.UserName " +
+                                        "FROM Card c " +
+                                            "JOIN AssignedTo a " +
+                                                "ON c.BoardName=a.BoardName AND c.TaskName=a.TaskName " +
+                                            "JOIN Users u " +
+                                                "ON u.UserEmail=a.UserEmail " +
+                                        "ORDER BY c.BoardName, c.TaskName, u.UserName";
+
+                        PreparedStatement stmt = conn.prepareStatement(query);
+
+                        ResultSet rs = stmt.executeQuery();
+
+                        String currentTask = "";
+
+                        while (rs.next()) {
+                            String task = rs.getString(2);
+
+                            if (task.equals(currentTask))
+                                task = "";
+                            else
+                                currentTask = task;
+
+                            String nHtml = "<tr><td>" + task + "</td><td>" + rs.getString(4) + "</td></tr>";
+                            html += nHtml;
+                        }
+                    } finally {
+                        if (conn != null)
+                            conn.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
         %>
 
 	    <table border="1">
@@ -31,23 +82,7 @@
 	      <td> <b> Card Task Name </b> </td>
 	      <td> <b> User Name </b> </td>
         <%
-	      // Card 1
-	      out.println("<tr>");
-	      out.println("<td> " + card1 + "</td>");
-	      out.println("<td> " + name1 + " </td>");
-
-	      out.println("<tr>");
-	      out.println("<td> </td>");
-	      out.println("<td> " + name2 + " </td>");
-
-	      // Card 2
-	      out.println("<tr>");
-	      out.println("<td> " + card2 + "</td>");
-	      out.println("<td> " + name3 + " </td>");
-
-	      out.println("<tr>");
-	      out.println("<td> </td>");
-	      out.println("<td> " + name4 + " </td>");
+          out.println(html);
         %>
 	      </table>	
 
@@ -64,7 +99,7 @@
                 </tr>
                 <tr>
                 <td>
-                <form name="logout" action=../index.html>
+                <form name="logout" action=Logout.jsp>
                 <input type=submit name="logoutMyNotes" value="Logout">
                 </form>
                 </td>
