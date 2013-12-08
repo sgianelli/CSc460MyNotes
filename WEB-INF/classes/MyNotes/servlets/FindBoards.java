@@ -101,7 +101,7 @@ public class FindBoards extends HttpServlet
                     result = query.executeQuery();
                     if (result.next() == false){
                         out.println("There is no board with few enough subscribers for you. Please select another amount and try again.");
-                        drawGetuser(req, out);
+                        drawGetUser(req, out);
                     }
                     else{
                      out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
