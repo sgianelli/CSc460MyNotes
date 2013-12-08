@@ -238,9 +238,9 @@ public class AddCard extends HttpServlet
                } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
                            System.out.println("Card already exists!");
-                           break;
+                           
                         }
-                        if (conn != null){
+                        else if (conn != null){
                            try{
                               System.err.print("Transaction is being rolled back\n");
                               conn.rollback();
