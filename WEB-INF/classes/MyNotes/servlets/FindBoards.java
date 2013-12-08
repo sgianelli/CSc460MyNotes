@@ -5,6 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import MyNotes.servlets.*;
 import java.sql.*;
+import MyNotes.utils.*;
 
 public class FindBoards extends HttpServlet
 {
@@ -75,11 +76,64 @@ public class FindBoards extends HttpServlet
    public void drawShowInfo(HttpServletRequest req, PrintWriter out)
    {
       String numUsers = req.getParameter("numUsers");
+      
+      try{
+         int num = Integer.parseInt(numUsers);
+      }catch(NumberFormatException e){
+         System.err.print("Error: Request could not be carried out");
+         HttpServletResponse response = new HttpServletResponse();
+         response.sendRedirect("index.html");
 
-      out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
+      }
+      if (num < 0){
+         System.err.print("Error: Request could not be carried out");
+         HttpServletResponse response = new HttpServletResponse();
+         response.sendRedirect("index.html");
+
+      }
+      
       /* TODO: Execute the query and print out the results rather than hard coding the results */
-      out.println("<p> CS460 TODOs </p>");
-      out.println("<p> CS473 TODOs </p>");
+      OracleConnect oracle = new OracleConnect();
+      Connection conn;
+      PreparedStatement query = null;
+      try{
+         try{
+            Class.forName("oracle.jdbc.OracleDriver");
+         }catch(ClassNotFoundException e){
+            System.err.print(e);
+         }
+
+         conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
+         if (conn == null)
+            throw new IOException("getConnection failed");
+         try{
+            conn.setAutoCommit(true);
+            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
+
+                    query = conn.prepareStatement(newQuery);
+                    query.setInt(1, num);
+                    ResultSet result;
+                    result = query.executeQuery();
+                    if (result.next() == false){
+                        out.println("There is no board with few enough subscribers for you. Please select another amount and try again.");
+                        drawGetUser(req, out);
+                    }
+                    else{
+                     out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
+                        out.println(result.getString(1));
+                        while (result.next() != false){
+                           out.println(result.getString(1));
+                        }
+                        
+                    }
+                }catch(SQLException excep){
+                    System.err.print("Get boards catch\n");
+                    System.err.print(excep);
+                }
+      }catch(SQLException except){
+         System.err.print("Outer catch block: " + except);
+      }
+   
 
    }
 

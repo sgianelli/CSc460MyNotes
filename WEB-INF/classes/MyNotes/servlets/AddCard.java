@@ -18,15 +18,9 @@ public class AddCard extends HttpServlet
     }
 
 
-    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out)
+    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out, String board_name, String task_name, int creationID, int day, int month, int year, String description)
     {
-        String board_name  = "CS460";
-        String task_name = "Complete assignment 8";
-        int creationID = 1;
-        int day = 10;
-        String month  = "December";
-        int year = 2013;
-        String description = "Create a really cool program. It's so cool we've started it the day we got the assignment and will finish a week early.";
+        
 
         out.println("<p><b>Board Name:</b>  " + board_name + "</p>");
         out.println("<p><b>Task Name:</b>  " + task_name + "</p>");
@@ -170,7 +164,7 @@ public class AddCard extends HttpServlet
 
         if(req.getParameter("Submit") != null)
         {
-            drawUpdateMessage(req,out);
+            
 
             String boardName ="";
             String taskName = "";
@@ -190,6 +184,7 @@ public class AddCard extends HttpServlet
 
             OracleConnect oracle = new OracleConnect();
             Connection conn;
+            PreparedStatement query = null;
             try{
                 try{
                     Class.forName("oracle.jdbc.OracleDriver");
@@ -202,27 +197,29 @@ public class AddCard extends HttpServlet
                 try{
                     conn.setAutoCommit(true);
                     //need to get creation ID from Board
-                    out.println("Connection Made");
-                    newQuery = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
+                    
+                    newQuery = "SELECT CreationID FROM Board WHERE BoardName = ?";
 
-                    Statement creationQuery = conn.createStatement();
+                    query = conn.prepareStatement(newQuery);
+                    query.setString(1, boardName);
                     ResultSet result;
-                    result = creationQuery.executeQuery(newQuery);
+                    result = query.executeQuery();
                     if (result.next() == false){
-                        System.out.println("Board does not exist");
+                        out.println("Board does not exist");
                     }
                     else{
                         creationID = result.getInt(1);
-                        out.println("Board exists");
+                        
                     }
                 }catch(SQLException excep){
                     System.err.print("CreationID catch");
+                    System.err.print(excep);
                 }
                 //need to insert into board
                 if (creationID != -1){
                     String insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try{
-                        PreparedStatement query = null;
+                        
 
                         query = conn.prepareStatement(insertCard);
                         query.setString(1, boardName);
@@ -234,10 +231,10 @@ public class AddCard extends HttpServlet
                         query.setInt(7, year);
                         query.executeUpdate();
                         conn.commit();
-                        System.out.println("Card added!");
+                        
                     } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
-                            System.out.println("Card already exists!");
+                            out.println("Card already exists!");
 
                         }
                         else if (conn != null){
@@ -251,6 +248,8 @@ public class AddCard extends HttpServlet
 
                     }
                 }
+
+                drawUpdateMessage(req,out, boardName, taskName, creationID, day, month, year, description);
             }catch(SQLException excep){
                 System.err.print("ERR ON LARGE CATCH");
             }
