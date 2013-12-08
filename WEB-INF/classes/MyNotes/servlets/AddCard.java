@@ -184,7 +184,7 @@ public class AddCard extends HttpServlet
                     out.print("Invalid day - please input an integer value between 1 and 31");
                     drawAddCardInformationMenu(req, out);
                 }
-            catch {
+            }catch (NumberFormatException e){
                 out.print("Invalid day - please input an integer value");
                 drawAddCardInformationMenu(req, out);
             }
@@ -194,7 +194,7 @@ public class AddCard extends HttpServlet
                     out.print("Invalid month - please input an integer value between 1 and 12");
                     drawAddCardInformationMenu(req, out);
                 }
-            }catch{
+            }catch(NumberFormatException e){
                 out.print("Invalid month - please input an integer value");
                 drawAddCardInformationMenu(req, out);
             }
