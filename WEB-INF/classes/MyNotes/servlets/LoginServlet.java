@@ -90,9 +90,9 @@ public class LoginServlet extends HttpServlet
         out.println("<hr");
         out.println("<br><br>");
         drawActiveOptions(req, out);
-        out.println("<form name=\"logout\" action=index.html>");
-        out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
-        out.println("</form>");
+        // out.println("<form name=\"logout\" action=index.html>");
+        // out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
+        // out.println("</form>");
 
         out.println("<br>");
     }
