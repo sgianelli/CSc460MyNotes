@@ -18,15 +18,9 @@ public class AddCard extends HttpServlet
     }
 
 
-    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out)
+    public void drawUpdateMessage(HttpServletRequest req, PrintWriter out, String board_name, String task_name, int creationID, int day, int month, int year, String description)
     {
-        String board_name  = "CS460";
-        String task_name = "Complete assignment 8";
-        int creationID = 1;
-        int day = 10;
-        String month  = "December";
-        int year = 2013;
-        String description = "Create a really cool program. It's so cool we've started it the day we got the assignment and will finish a week early.";
+        
 
         out.println("<p><b>Board Name:</b>  " + board_name + "</p>");
         out.println("<p><b>Task Name:</b>  " + task_name + "</p>");
@@ -169,7 +163,7 @@ public class AddCard extends HttpServlet
 
         if(req.getParameter("Submit") != null)
         {
-            drawUpdateMessage(req,out);
+            
 
             String boardName ="";
             String taskName = "";
@@ -214,7 +208,7 @@ public class AddCard extends HttpServlet
                     }
                     else{
                         creationID = result.getInt(1);
-                        out.println("Board exists");
+                        
                     }
                 }catch(SQLException excep){
                     System.err.print("CreationID catch");
@@ -236,7 +230,7 @@ public class AddCard extends HttpServlet
                         query.setInt(7, year);
                         query.executeUpdate();
                         conn.commit();
-                        out.println("Card added!");
+                        
                     } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
                             out.println("Card already exists!");
@@ -253,6 +247,8 @@ public class AddCard extends HttpServlet
 
                     }
                 }
+
+                drawUpdateMessage(req,out, boardName, taskName, creationID, day, month, year, description);
             }catch(SQLException excep){
                 System.err.print("ERR ON LARGE CATCH");
             }
