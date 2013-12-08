@@ -15,8 +15,6 @@ public class LoginServlet extends HttpServlet
         super();
     }
 
-    OracleConnect oc = new OracleConnect();
-
     public void drawHeader(HttpServletRequest req, PrintWriter out)
     {
         out.println("<html>");
@@ -49,11 +47,11 @@ public class LoginServlet extends HttpServlet
 
         out.println("<br>");
 
-	out.println("<form name=\"AddCard\" action=AddCard method=get>");
+        out.println("<form name=\"AddCard\" action=AddCard method=get>");
         out.println("<input type=submit name=\"AddCard\" value=\"Add a Card\">");
         out.println("</form>");
 
-	out.println("<br>");
+        out.println("<br>");
 
         out.println("<form name=\"findBoards\" action=FindBoards method=get>");
         out.println("<input type=submit name=\"findBoard\" value=\"Find boards with at least a number of subscribers.\">");
@@ -72,10 +70,15 @@ public class LoginServlet extends HttpServlet
         out.println("</form>");
     }
 
-    private void drawFailOptions(HttpServletRequest req, PrintWriter out)
+    private void drawFailOptions(HttpServletRequest req, PrintWriter out, boolean correctEmail)
     {
         out.println("<font size=5 face=\"Arial,Helvetica\">");
-        out.println("<b>Error: e-mail does not exist.</b></br>");
+
+        if (correctEmail)
+            out.println("<b>Error: Enter the correct username.</b></br>");
+        else
+            out.println("<b>Error: e-mail does not exist.</b></br>");
+
         out.println("<font size=4>");
         out.println("<b>MyNotes: a UA Project Management Program</b><br></font>");
         out.println("</font>");
@@ -97,23 +100,106 @@ public class LoginServlet extends HttpServlet
         drawFooter(req,out);
     }
 
-    public void drawLoginFail(HttpServletRequest req, PrintWriter out)
+    public void drawLoginFail(HttpServletRequest req, PrintWriter out, boolean correctEmail)
     {
         drawHeader(req,out);
-        drawFailOptions(req,out);
+        drawFailOptions(req,out,correctEmail);
         drawFooter(req,out);
     }
 
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-    {
+    private static Connection conn;
+
+    private boolean checkEmail(String email) {
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+            Connection conn = DriverManager.getConnection(OracleConnect.connect_string, OracleConnect.user_name, OracleConnect.password);
+
+            if (conn == null)
+                throw new Exception("getConnection failed");
+
+            try {
+                conn.setAutoCommit(true);
+
+                PreparedStatement emailCheck = conn.prepareStatement("SELECT COUNT(*) FROM Users WHERE UserEmail=?");
+                emailCheck.setString(1, email);
+
+                ResultSet rs = emailCheck.executeQuery();
+
+                rs.next();
+                Integer emailCount = rs.getInt(1);
+
+                return emailCount == 1;
+            } finally {
+                if (conn != null)
+                    conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return false;
+    }
+
+    private boolean checkUsername(String email, String username) {
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+            Connection conn = DriverManager.getConnection(OracleConnect.connect_string, OracleConnect.user_name, OracleConnect.password);
+
+            if (conn == null)
+                throw new Exception("getConnection failed");
+
+            try {
+                conn.setAutoCommit(true);
+
+                PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM Users WHERE UserEmail=? AND UserName=?");
+                stmt.setString(1, email);
+                stmt.setString(2, username);
+
+                ResultSet rs = stmt.executeQuery();
+
+                rs.next();
+                Integer count = rs.getInt(1);
+
+                return count == 1;
+            } finally {
+                if (conn != null)
+                    conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return false;
+    }
+
+    public void storeCredentials(HttpServletRequest req, String email, String username) {
+        HttpSession session = req.getSession();
+
+        session.setAttribute("email", email);
+        session.setAttribute("username", username);
+    }
+
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
-        //if login success, call the following function
-        drawLoginSuccess(req,out);
+        if (req.getParameter("MainMenu") != null) {
+            drawLoginSuccess(req,out);
+        } else {
+            String username = req.getParameter("password").toString();
+            String email = req.getParameter("email").toString();
 
-        //if fail, call the following function
-        //drawLoginFail(req,out);
+
+            if (checkEmail(email)) {
+                if (checkUsername(email, username))
+                    drawLoginSuccess(req,out);
+                else
+                    drawLoginFail(req,out,true);
+            } else
+                drawLoginFail(req,out,false);
+        }
     }
 }
 
