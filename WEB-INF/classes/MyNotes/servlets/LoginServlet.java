@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet
 
         out.println("<hr");
         out.println("<br><br>");
-
+        drawActiveOptions(req, out);
         out.println("<form name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         out.println("</form>");
@@ -99,6 +99,7 @@ public class LoginServlet extends HttpServlet
 
     public void drawLoginSuccess(HttpServletRequest req, PrintWriter out)
     {
+
         drawHeader(req,out);
         drawActiveOptions(req,out);
         drawFooter(req,out);
@@ -106,6 +107,8 @@ public class LoginServlet extends HttpServlet
 
     public void drawLoginFail(HttpServletRequest req, PrintWriter out, boolean correctEmail)
     {
+        session.setAttribute("email", null);
+        session.setAttribute("username", null);
         drawHeader(req,out);
         drawFailOptions(req,out,correctEmail);
         drawFooter(req,out);
