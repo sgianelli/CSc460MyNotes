@@ -170,7 +170,11 @@ public class AddCard extends HttpServlet
       if(req.getParameter("Submit") == null)
       {
          drawAddCardInformationMenu(req,out);
-         String boardName ="";
+
+      
+      }
+      else if (req.getParameter("Submit") != null){
+           String boardName ="";
       String taskName = "";
       String description = "";
       int day = 0;
@@ -251,7 +255,6 @@ public class AddCard extends HttpServlet
        }catch(SQLException excep){
           System.err.print("ERR ON LARGE CATCH");
        }
-      
       }
       else
       {
