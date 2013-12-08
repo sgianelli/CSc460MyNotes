@@ -73,7 +73,7 @@ public class FindBoards extends HttpServlet
 
 
 
-   public void drawShowInfo(HttpServletRequest req, PrintWriter out, HttpServletResponse response)
+   public void drawShowInfo(HttpServletRequest req, PrintWriter out, HttpServletResponse response) throws IOException
    {
       String numUsers = req.getParameter("numUsers");
       int num = -1;
