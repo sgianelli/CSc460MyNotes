@@ -108,7 +108,7 @@ public class FindBoards extends HttpServlet
             throw new IOException("getConnection failed");
          try{
             conn.setAutoCommit(true);
-            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
+            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY Board.BoardName) WHERE UserEmail <= ?";
 
                     query = conn.prepareStatement(newQuery);
                     query.setInt(1, num);
@@ -126,10 +126,10 @@ public class FindBoards extends HttpServlet
                         }
                         
                     }
-                }catch(SQLException excep){
+         }catch(SQLException excep){
                     System.err.print("Get boards catch\n");
                     System.err.print(excep);
-                }
+         }
       }catch(SQLException except){
          System.err.print("Outer catch block: " + except);
       }
