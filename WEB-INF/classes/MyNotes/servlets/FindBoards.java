@@ -5,6 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import MyNotes.servlets.*;
 import java.sql.*;
+import MyNotes.utils.*;
 
 public class FindBoards extends HttpServlet
 {
@@ -75,7 +76,21 @@ public class FindBoards extends HttpServlet
    public void drawShowInfo(HttpServletRequest req, PrintWriter out)
    {
       String numUsers = req.getParameter("numUsers");
+      
+      try{
+         int num = Integer.parseInt(numUsers);
+      }catch(NumberFormatException){
+         System.err.print("Error: Request could not be carried out");
+         HttpServletResponse response = new HttpServletResponse();
+         response.sendRedirect("index.html");
 
+      }
+      if (num < 0){
+         System.err.print("Error: Request could not be carried out");
+         HttpServletResponse response = new HttpServletResponse();
+         response.sendRedirect("index.html");
+
+      }
       
       /* TODO: Execute the query and print out the results rather than hard coding the results */
       OracleConnect oracle = new OracleConnect();
@@ -93,10 +108,10 @@ public class FindBoards extends HttpServlet
             throw new IOException("getConnection failed");
          try{
             conn.setAutoCommit(true);
-            newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
+            String newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
 
                     query = conn.prepareStatement(newQuery);
-                    query.setInt(1, numUsers);
+                    query.setInt(1, num);
                     ResultSet result;
                     result = query.executeQuery();
                     if (result.next() == false){
