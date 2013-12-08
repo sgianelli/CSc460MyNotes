@@ -243,8 +243,11 @@ public class AddCard extends HttpServlet
                            System.err.print("ERR");
                         }
                   }
+            }catch(SQLException excep){
+               System.err.print("ERR ON MIDDLE CATCH");
+            }
          }
-         catch(SQLEXCEPtION excep){
+         catch(SQLException excep){
             System.err.print("ERR ON LARGE CATCH");
          }
       
