@@ -258,7 +258,7 @@ public class AddCard extends HttpServlet
                         query.executeUpdate();
                         conn.commit();
                         
-                        String userEmail = req.getSession().getAttribute("email");
+                        String userEmail = String(req.getSession().getAttribute("email"));
                         String assigned = "INSERT INTO AssignedTo (BoardName, TaskName, UserEmail) Values (?, ?, ?)";
                         query = conn.prepareStatement(assigned);
                         query.setString(1, boardName);
