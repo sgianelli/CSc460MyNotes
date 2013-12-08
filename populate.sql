@@ -18,7 +18,7 @@ INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('shane@email', 'Christmas 
 INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('shane@email', 'Vacation Plans');
 INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('kelly@email', 'Vacation Plans');
 
-INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy Kelly gift', kate@email);
-INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Vacation Plans', 'Buy tickets to Seattle', shane@email);
-INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Elegant Thought', 'Write notes on Florida trip', shane@email);
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy Kelly gift', 'kate@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Vacation Plans', 'Buy tickets to Seattle', 'shane@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Elegant Thought', 'Write notes on Florida trip', 'shane@email');
 
