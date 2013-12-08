@@ -239,6 +239,7 @@ public class AddCard extends HttpServlet
                     }
                 }catch(SQLException excep){
                     out.println("Invalid Board Name - please try again");
+                    drawAddCardInformationMenu(req, out);
                     System.err.print("CreationID catch");
                     System.err.print(excep);
                 }
