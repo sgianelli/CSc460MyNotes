@@ -258,6 +258,12 @@ public class AddCard extends HttpServlet
                         query.executeUpdate();
                         conn.commit();
                         
+                        String userEmail = req.getSession.getAttribute("email");
+                        String assigned = "INSERT INTO AssignedTo (BoardName, TaskName, UserEmail) Values (?, ?, ?)";
+                        query = conn.prepareStatement(assigned);
+                        query.setString(1, boardName);
+                        query.setString(2, taskName);
+                        query.setString(3, userEmail);
                     } catch(SQLException e){
                         if (e.getSQLState().equals("23000")){
                             out.println("Card already exists!");
