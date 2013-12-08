@@ -76,10 +76,44 @@ public class FindBoards extends HttpServlet
    {
       String numUsers = req.getParameter("numUsers");
 
-      out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
+      
       /* TODO: Execute the query and print out the results rather than hard coding the results */
-      out.println("<p> CS460 TODOs </p>");
-      out.println("<p> CS473 TODOs </p>");
+
+      try{
+         try{
+            Class.forName("oracle.jdbc.OracleDriver");
+         }catch(ClassNotFoundException e){
+            System.err.print(e);
+         }
+
+         conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
+         if (conn == null)
+            throw new IOException("getConnection failed");
+         try{
+            conn.setAutoCommit(true);
+            newQuery = "SELECT BoardName FROM (SELECT Board.BoardName, COUNT(Subscribes.UserEmail) AS UserEmail FROM Board LEFT JOIN Subscribes ON Board.BoardName = Subscribes.BoardName GROUP BY BoardName) WHERE UserEmail <= ?";
+
+                    query = conn.prepareStatement(newQuery);
+                    query.setInt(1, numUsers);
+                    ResultSet result;
+                    result = query.executeQuery();
+                    if (result.next() == false){
+                        out.println("There is no board with few enough subscribers for you. Please select another amount and try again.");
+                        drawGetuser(req, out);
+                    }
+                    else{
+                     out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
+                        
+                        
+                    }
+                }catch(SQLException excep){
+                    System.err.print("Get boards catch\n");
+                    System.err.print(excep);
+                }
+      }catch(SQLException except){
+         System.err.print("Outer catch block: " + except)
+      }
+   
 
    }
 
