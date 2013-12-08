@@ -114,7 +114,7 @@ public class FindBoards extends HttpServlet
                     System.err.print(excep);
                 }
       }catch(SQLException except){
-         System.err.print("Outer catch block: " + except)
+         System.err.print("Outer catch block: " + except);
       }
    
 
