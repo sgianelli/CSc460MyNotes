@@ -103,7 +103,10 @@ public class FindBoards extends HttpServlet
                     }
                     else{
                      out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
-                        
+                        out.println(result.getString(1));
+                        while (result.next() != false){
+                           out.println(result.getString(1));
+                        }
                         
                     }
                 }catch(SQLException excep){
