@@ -28,7 +28,10 @@ public class LoginServlet extends HttpServlet
         out.println("<font size=7 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         out.println("<center>\n<strong>MyNotes</strong></br>");
         out.println("<font size=4>MyNotes: a UA Project Management Program");
-        out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
+
+        if (req.getSession().getAttribute("username") != null)
+            out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
+
         out.println("</center>\n<hr color=\"#000066\">");
         out.println("<br><br>");
 
@@ -87,7 +90,7 @@ public class LoginServlet extends HttpServlet
         out.println("<hr");
         out.println("<br><br>");
 
-        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
+        out.println("<form name=\"logout\" action=index.html>");
         out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         out.println("</form>");
 
