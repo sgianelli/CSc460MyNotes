@@ -244,6 +244,9 @@ public class AddCard extends HttpServlet
                         }
                   }
          }
+         catch(SQLEXCEPtION excep){
+            System.err.print("ERR ON LARGE CATCH");
+         }
       
 
    }
