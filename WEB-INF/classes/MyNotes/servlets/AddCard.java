@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 import MyNotes.servlets.*;
+import MyNotes.utils.*;
 
 
 public class AddCard extends HttpServlet
@@ -175,5 +176,75 @@ public class AddCard extends HttpServlet
       }
 
       drawFooter(req,out);
+
+      String boardName ="";
+      String taskName = "";
+      String description = "";
+      int day = "";
+      int month = "";
+      int year = "";
+      String query = "";
+
+      boardName = req.getParameterValues("boardname")[0];
+      taskName = req.getParameterValues("taskname")[0];
+      description = req.getParameterValues("description")[0];
+      day = Integer.parseInt(req.getParameterValues("day")[0]);
+      month = Integer.parseInt(req.getParameterValues("month")[0]);
+      year = Integer.parseInt(req.getParameterValues("year")[0]);
+
+      OracleConnect oracle = new OracleConnect();
+      Connection conn;
+        try{
+            Class.forName("oracle.jdbc.OracleDriver");
+            conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
+            if (conn == null)
+                throw new Exception("getConnection failed");
+            try{
+               conn.setAutoCommit(true);
+               //need to get creation ID from Board
+               int creationID = -1;
+               query = "SELECT CreationID FROM Board WHERE BoardName = " + boardName;
+
+               Statement creationQuery = conn.createStatement();
+               ResultSet result;
+               result = creationQuery.executeQuery(query);
+               if (result.next() == false){
+                     System.out.println("Board does not exist");
+               }
+               else{
+                     creationID = result.getInt(1);
+               }
+                //need to insert into board
+               if (creationID != -1){
+                  insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                   try{
+                        PreparedStatement query = null;
+                        query = conn.prepareStatement(insertCard);
+                        query.setString(1, boardName);
+                        query.setString(2, taskName);
+                        query.setInt(3, creationID);
+                        query.setString(4, description);
+                        query.setInt(5, day);
+                        query.setInt(6, month);
+                        query.setInt(7, year);
+                        query.executeUpdate();
+                        conn.commit();
+                        System.out.println("Card added!");
+                  } catch(SQLException e){
+                        if (e.getSQLState().equals("23000")){
+                           System.out.println("Card already exists!");
+                           break;
+                        }
+                        if (conn != null){
+                        try{
+                           System.err.print("Transaction is being rolled back\n");
+                           conn.rollback();
+                        }catch(SQLException excep){
+                           System.err.print("ERR");
+                        }
+                  }
+         }
+      
+
    }
 }
