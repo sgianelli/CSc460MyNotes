@@ -241,15 +241,16 @@ public class AddCard extends HttpServlet
                            break;
                         }
                         if (conn != null){
-                        try{
-                           System.err.print("Transaction is being rolled back\n");
-                           conn.rollback();
-                        }catch(SQLException excep){
-                           System.err.print("ERR");
+                           try{
+                              System.err.print("Transaction is being rolled back\n");
+                              conn.rollback();
+                           }catch(SQLException excep){
+                              System.err.print("ERR");
+                           }
                         }
-               }
 
-          }
+                  }
+            }
        }catch(SQLException excep){
           System.err.print("ERR ON LARGE CATCH");
        }
