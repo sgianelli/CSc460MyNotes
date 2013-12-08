@@ -214,6 +214,9 @@ public class AddCard extends HttpServlet
                else{
                      creationID = result.getInt(1);
                }
+            }catch(SQLException excep){
+               System.err.print("CreationID catch");
+            }
                 //need to insert into board
                if (creationID != -1){
                   insertCard = "INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -243,9 +246,7 @@ public class AddCard extends HttpServlet
                            System.err.print("ERR");
                         }
                   }
-            }catch(SQLException excep){
-               System.err.print("ERR ON MIDDLE CATCH");
-            }
+
          }
          catch(SQLException excep){
             System.err.print("ERR ON LARGE CATCH");
