@@ -82,13 +82,13 @@ public class FindBoards extends HttpServlet
       }catch(NumberFormatException e){
          System.err.print("Error: Request could not be carried out");
          response.setStatus(HttpServletResponse.SC_FOUND);
-         response.setHeader("Location", "index.html");
+         response.setHeader("Location", "LoginServlet.html");
 
       }
       if (num < 0){
          System.err.print("Error: Request could not be carried out");
          response.setStatus(HttpServletResponse.SC_FOUND);
-         response.setHeader("Location", "index.html");
+         response.setHeader("Location", "LoginServlet.html");
 
       }
       
@@ -119,10 +119,10 @@ public class FindBoards extends HttpServlet
                         drawGetUser(req, out);
                     }
                     else{
-                     out.println("<p><b>Boards that have at least " + numUsers + " users:</b>");
-                        out.println(result.getString(1));
+                     out.println("<p><b>Boards that have at least " + numUsers + " users:</b></br>");
+                        out.println(result.getString(1) + "</br>");
                         while (result.next() != false){
-                           out.println(result.getString(1));
+                           out.println(result.getString(1) + "</br>");
                         }
                         
                     }
