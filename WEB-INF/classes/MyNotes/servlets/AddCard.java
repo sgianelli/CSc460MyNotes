@@ -170,15 +170,7 @@ public class AddCard extends HttpServlet
       if(req.getParameter("Submit") == null)
       {
          drawAddCardInformationMenu(req,out);
-      }
-      else
-      {
-         drawUpdateMessage(req,out);
-      }
-
-      drawFooter(req,out);
-
-      String boardName ="";
+         String boardName ="";
       String taskName = "";
       String description = "";
       int day = 0;
@@ -260,6 +252,15 @@ public class AddCard extends HttpServlet
           System.err.print("ERR ON LARGE CATCH");
        }
       
+      }
+      else
+      {
+         drawUpdateMessage(req,out);
+      }
+
+      drawFooter(req,out);
+
+
 
    }
   }
