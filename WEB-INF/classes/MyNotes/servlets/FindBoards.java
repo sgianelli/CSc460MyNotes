@@ -79,7 +79,7 @@ public class FindBoards extends HttpServlet
       
       try{
          int num = Integer.parseInt(numUsers);
-      }catch(NumberFormatException){
+      }catch(NumberFormatException e){
          System.err.print("Error: Request could not be carried out");
          HttpServletResponse response = new HttpServletResponse();
          response.sendRedirect("index.html");
