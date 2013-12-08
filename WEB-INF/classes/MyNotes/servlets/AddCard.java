@@ -196,7 +196,7 @@ public class AddCard extends HttpServlet
                 try{
                     conn.setAutoCommit(true);
                     //need to get creation ID from Board
-                    out.println("Connection Made");
+                    
                     newQuery = "SELECT CreationID FROM Board WHERE BoardName = ?";
 
                     query = conn.prepareStatement(newQuery);
