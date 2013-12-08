@@ -208,7 +208,7 @@ public class AddCard extends HttpServlet
               
                newQuery = "SELECT CreationID FROM Board WHERE BoardName = ?";
                query = conn.prepareStatement(newQuery);
-               query.setString(boardName);
+               query.setString(1, boardName);
                Statement creationQuery = conn.createStatement();
                ResultSet result;
                result = query.executeQuery();
