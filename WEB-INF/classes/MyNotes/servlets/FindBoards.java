@@ -78,7 +78,9 @@ public class FindBoards extends HttpServlet
 
       
       /* TODO: Execute the query and print out the results rather than hard coding the results */
-
+      OracleConnect oracle = new OracleConnect();
+      Connection conn;
+      PreparedStatement query = null;
       try{
          try{
             Class.forName("oracle.jdbc.OracleDriver");
