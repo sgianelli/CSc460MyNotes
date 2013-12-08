@@ -13,6 +13,8 @@ INSERT INTO Board (BoardName, CreationID) VALUES ('Vacation Plans', 3);
 INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES ('Christmas List', 'Buy Kelly gift', 1, 'Ideas - dress? new phone?', 25, 12, 2013);
 INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES ('Vacation Plans', 'Buy tickets to Seattle', 1, 'Need to decide on dates', 19, 12, 2013);
 INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES ('Elegant Thought', 'Write notes on Florida trip', 1, 'Patricia needs the notes on expenses in Floriday', 10, 12, 2013);
+INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES ('Christmas List', 'Buy Kate gift', 1, 'Ideas - sword? new phone?', 25, 12, 2013);
+INSERT INTO Card (BoardName, TaskName, CreationID, Description, DeadlineDay, DeadlineMonth, DeadlineYear) VALUES ('Christmas List', 'Buy myself gift', 1, 'Ideas - guns?', 15, 12, 2013);
 
 INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('shane@email', 'Christmas List');
 INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('shane@email', 'Vacation Plans');
@@ -21,4 +23,8 @@ INSERT INTO Subscribes (UserEmail, BoardName) VALUES ('kelly@email', 'Vacation P
 INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy Kelly gift', 'kate@email');
 INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Vacation Plans', 'Buy tickets to Seattle', 'shane@email');
 INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Elegant Thought', 'Write notes on Florida trip', 'shane@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy Kate gift', 'shane@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy Kate gift', 'kelly@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Vacation Plans', 'Buy tickets to Seattle', 'kate@email');
+INSERT INTO AssignedTo(BoardName, TaskName, UserEmail) VALUES ('Christmas List', 'Buy myself gift', 'shane@email');
 

@@ -38,7 +38,7 @@ public class AddCard extends HttpServlet
 
         out.println("<br>");
 
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
         out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
         out.println("</form>");
     }
@@ -57,6 +57,7 @@ public class AddCard extends HttpServlet
         out.println("<font color=\"#000066\">");
         out.println("<center>\n<font size=7><strong>MyNotes</strong></font></br>");
         out.println("<font size=4>MyNotes: a UA Project Management Program</font>");
+        out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
         out.println("</center>\n<font size=4><hr color=\"#000066\">");
         out.println("Add new card </b><br></font>");
         out.println("</font>");
