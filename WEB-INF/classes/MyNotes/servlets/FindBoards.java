@@ -45,7 +45,7 @@ public class FindBoards extends HttpServlet
       out.println("</p>");
 
       out.println("<p>");
-      out.println("<form name=\"logout\" action=index.html>");
+      out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
       out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
       out.println("</form>");
       out.println("</p>");
@@ -126,6 +126,8 @@ public class FindBoards extends HttpServlet
                         }
                         
                     }
+
+                    conn.close();
          }catch(SQLException excep){
                     System.err.print("Get boards catch\n");
                     System.err.print(excep);

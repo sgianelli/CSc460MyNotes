@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet
         out.println("<hr");
         out.println("<br><br>");
 
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
         out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         out.println("</form>");
 

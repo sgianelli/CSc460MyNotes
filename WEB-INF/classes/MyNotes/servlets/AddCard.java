@@ -143,7 +143,7 @@ public class AddCard extends HttpServlet
 
         out.println("<tr>");
         out.println("<td>");
-        out.println("<form name=\"logout\" action=index.html>");
+        out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
         out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
         out.println("</form>");
         out.println("</p>");
@@ -276,6 +276,7 @@ public class AddCard extends HttpServlet
                 }
 
                 drawUpdateMessage(req,out, boardName, taskName, creationID, day, month, year, description);
+                conn.close();
             }catch(SQLException excep){
                 System.err.print("ERR ON LARGE CATCH");
             }

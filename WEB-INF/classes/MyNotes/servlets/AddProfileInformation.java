@@ -103,7 +103,7 @@ public class AddProfileInformation extends HttpServlet
 
             out.println("<br>");
 
-            out.println("<form name=\"logout\" action=index.html>");
+            out.println("<form name=\"logout\" action=/MyNotes/JSP/Logout.jsp>");
             out.println("<input type=submit name=\"logoutMyNotes\" value=\"Logout\">");
             out.println("</form>");
         } else {
