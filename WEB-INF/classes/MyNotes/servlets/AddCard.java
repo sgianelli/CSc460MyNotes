@@ -160,7 +160,7 @@ public class AddCard extends HttpServlet
    }
 
 
-   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, ClassNotFoundException 
    {
       res.setContentType("text/html");
       PrintWriter out = res.getWriter();
@@ -197,7 +197,11 @@ public class AddCard extends HttpServlet
       OracleConnect oracle = new OracleConnect();
       Connection conn;
       try{
-          Class.forName("oracle.jdbc.OracleDriver");
+          try{
+            Class.forName("oracle.jdbc.OracleDriver");
+          }catch(ClassNotFoundException e){
+            System.err.print(e);
+          }
           conn = DriverManager.getConnection(oracle.connect_string, oracle.user_name, oracle.password);
           if (conn == null)
             throw new IOException("getConnection failed");
