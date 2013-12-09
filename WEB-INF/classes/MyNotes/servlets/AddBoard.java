@@ -66,99 +66,99 @@ public class AddBoard extends HttpServlet{
    		out.println("</form>");
    }
 
-   // public void addBoardQuery(HttpServletRequest req, PrintWriter out, HttpServletResponse response) throws IOException
-   // {
-   // 		String boardName = req.getParameter("boardName");
-   // 		OracleConnect oracle = new OracleConnect();
-   // 		Connection conn;
-   // 		PreparedStatement query = null;
+   public void addBoardQuery(HttpServletRequest req, PrintWriter out, HttpServletResponse response) throws IOException
+   {
+   		String boardName = req.getParameter("boardName");
+   		OracleConnect oracle = new OracleConnect();
+   		Connection conn;
+   		PreparedStatement query = null;
 
-   // 		try{
-   // 			try{
-   // 				Class.forName("oracle.jdbc.OracleDriver");
-   // 			}catch(ClassNotFoundException e){
-   // 				System.err.print(e);
-   // 			}
+   		try{
+   			try{
+   				Class.forName("oracle.jdbc.OracleDriver");
+   			}catch(ClassNotFoundException e){
+   				System.err.print(e);
+   			}
 
-   // 			conn = DriverManager.getConnection(OracleConnect.connect_string, OracleConnect.user_name, OracleConnect.password);
-   // 			if (conn == null){
-   // 				throw new IOException("getConnection failed");
-   // 			}
+   			conn = DriverManager.getConnection(OracleConnect.connect_string, OracleConnect.user_name, OracleConnect.password);
+   			if (conn == null){
+   				throw new IOException("getConnection failed");
+   			}
 
-   // 			try{
-   // 				int creationID = 1;
-   // 				conn.setAutoCommit(true);
-   // 				String maxIDQuery = "SELECT MAX(CreationID) FROM Creation";
-   // 				query = conn.prepareStatement(maxIDQuery);
-   // 				ResultSet result;
+   			try{
+   				int creationID = 1;
+   				conn.setAutoCommit(true);
+   				String maxIDQuery = "SELECT MAX(CreationID) FROM Creation";
+   				query = conn.prepareStatement(maxIDQuery);
+   				ResultSet result;
 
-   // 				result = query.executeQuery();
-   // 				if (result.next() == false){
-   // 					creationID =1;
-   // 				}
-   // 				else{
-   // 					creationID = result.getInt(1) + 1;
-   // 				}
+   				result = query.executeQuery();
+   				if (result.next() == false){
+   					creationID =1;
+   				}
+   				else{
+   					creationID = result.getInt(1) + 1;
+   				}
 
-   // 				String userEmail = (String) req.getSession().getAttribute("email");
+   				String userEmail = (String) req.getSession().getAttribute("email");
 
-   // 				String creationQuery = "INSERT INTO Creation (UserEmail, CreationID) VALUES (?, ?)";
-   // 				query = conn.prepareStatement(creationQuery);
-   // 				query.setString(1, userEmail);
-   // 				query.setInt(2, creationID);
-   // 				result = query.executeQuery();
-   // 				if (result.next() == false){
-   // 					System.err.println("issue with creation");
-   // 					drawAddBoard(req, out);
-   // 				}
-   // 				else{
-   // 					try{
-   // 						String boardCreation = "INSERT INTO Board(BoardName, CreationID) VALUES (?, ?)";
-   // 						query = conn.prepareStatement(boardCreation);
-   // 						query.setString(1, boardName);
-   // 						query.setInt(2, creationID);
-   // 						result = query.executeQuery();
-   // 						if (result.next() == false){
-   // 							out.println("AddBoard failed, board name is not valid. Please try again");
-   // 							drawAddBoard(req, out);
-   // 						}
-   // 						else{
-   // 							out.println("Your board " + boardName + " has now been created!");
-   // 						}
-   // 					}catch(SQLException e){
-   // 						out.println("AddBoard failed, board name is not valid. Please try again");
-   // 						drawAddBoard(req, out);
-   // 						System.err.print(e);
-   // 					}
+   				String creationQuery = "INSERT INTO Creation (UserEmail, CreationID) VALUES (?, ?)";
+   				query = conn.prepareStatement(creationQuery);
+   				query.setString(1, userEmail);
+   				query.setInt(2, creationID);
+   				result = query.executeQuery();
+   				if (result.next() == false){
+   					System.err.println("issue with creation");
+   					drawAddBoard(req, out);
+   				}
+   				else{
+   					try{
+   						String boardCreation = "INSERT INTO Board(BoardName, CreationID) VALUES (?, ?)";
+   						query = conn.prepareStatement(boardCreation);
+   						query.setString(1, boardName);
+   						query.setInt(2, creationID);
+   						result = query.executeQuery();
+   						if (result.next() == false){
+   							out.println("AddBoard failed, board name is not valid. Please try again");
+   							drawAddBoard(req, out);
+   						}
+   						else{
+   							out.println("Your board " + boardName + " has now been created!");
+   						}
+   					}catch(SQLException e){
+   						out.println("AddBoard failed, board name is not valid. Please try again");
+   						drawAddBoard(req, out);
+   						System.err.print(e);
+   					}
    					
-   // 				}
+   				}
 
-   // 			}catch{
-   // 				System.err.println("Query catch");
-   // 			System.err.println(e);
-   // 			}
+   			}catch{
+   				System.err.println("Query catch");
+   			System.err.println(e);
+   			}
 
-   // 		}catch(SQLException e){
-   // 			System.err.println("Large catch");
-   // 			System.err.println(e);
-   // 		}
+   		}catch(SQLException e){
+   			System.err.println("Large catch");
+   			System.err.println(e);
+   		}
 
-   // }
-   // public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-   // {
-   // 		res.setContentType("text/html");
-   // 		PrintWriter out = res.getWriter();
+   }
+   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+   {
+   		res.setContentType("text/html");
+   		PrintWriter out = res.getWriter();
 
-   // 		drawHeader(req, out);
-   // 		if (req.getParameter("AddBoard") != null){
+   		drawHeader(req, out);
+   		if (req.getParameter("AddBoard") != null){
             
-   // 			drawAddBoard(req, out);
-   // 		}
-   // 		else{
+   			drawAddBoard(req, out);
+   		}
+   		else{
             
-   // 			addBoardQuery(req, out, res);
-   // 		}
-   // 		drawFooter(req, out);
-   // }
+   			addBoardQuery(req, out, res);
+   		}
+   		drawFooter(req, out);
+   }
 
 }
