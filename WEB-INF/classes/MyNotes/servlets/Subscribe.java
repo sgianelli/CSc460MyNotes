@@ -102,10 +102,13 @@ public class Subscribe extends HttpServlet
    				
    				}
    			}catch(SQLException e){
+               out.println("Subscribe failed, board name is invalid. Please try again");
+               drawSubscribe(req, out);
    				System.err.print("Catch with executing query");
    				System.err.print("\n" + e);
    			}
    		}catch(SQLException e){
+           
    			System.err.println("Large catch");
    			System.err.print(e);
    		}
