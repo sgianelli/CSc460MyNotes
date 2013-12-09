@@ -58,7 +58,7 @@ public class Subscribe extends HttpServlet
    public void drawSubscribe(HttpServletRequest req, PrintWriter out){
    		out.println("<form name=\"boardSearch\" action=Subscribe method=get>");
    		out.println("Enter board name to subscribe to: ");
-   		out.println(",input type=text size=64 name=\"boardName\">");
+   		out.println("<input type=text size=64 name=\"boardName\">");
    		out.println("<input type=submit name=\"subscribeBoards\" value=\"Subscribe\">");
    		out.println("</form>");
    }
@@ -120,11 +120,11 @@ public class Subscribe extends HttpServlet
 
    		drawHeader(req, out);
    		if (req.getParameter("Subscribe") != null){
-            out.println("IN HERE");
+            
    			drawSubscribe(req, out);
    		}
    		else{
-            out.println("NOPE, IN HERE");
+            
    			subscribeQuery(req, out, res);
    		}
    		drawFooter(req, out);
