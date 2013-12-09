@@ -133,7 +133,7 @@ public class AddBoard extends HttpServlet{
    					
    				}
 
-   			}catch{
+   			}catch(SQLException e){
    				System.err.println("Query catch");
    			System.err.println(e);
    			}
