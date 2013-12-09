@@ -130,6 +130,8 @@ public class AddProfileInformation extends HttpServlet
         out.println("<font size=7 face=\"Arial, Helvetica, sans-serif\" color=\"#000066\">");
         out.println("<center>\n<strong>MyNotes</strong></br></font>");
         out.println("<font size=4>MyNotes: a UA Project Management Program");
+         if (req.getSession().getAttribute("username") != null)
+            out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
         out.println("</center>\n<hr color=\"#000066\">");
         out.println("Add new user </b><br></font>");
 

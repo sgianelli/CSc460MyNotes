@@ -25,6 +25,10 @@ public class Subscribe extends HttpServlet
       out.println("<font color=\"#000066\">");
       out.println("<center>\n<font size=7><strong>MyNotes</strong></font></br>");
       out.println("<font size=4>MyNotes: a UA Project Management Program</font>");
+
+       if (req.getSession().getAttribute("username") != null)
+            out.println("<font size=4></br>Hello, " + req.getSession().getAttribute("username") + "!");
+         
       out.println("</center>\n<font size=4><hr color=\"#000066\">");
       out.println("<b>Find Boards</b><br><br/></font>");
       out.println("</font>");
