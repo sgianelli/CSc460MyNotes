@@ -55,7 +55,7 @@ public class Subscribe extends HttpServlet
       out.println("</html>");
    }
 
-   public void drawSubscribe(HttpServletRequest req, Printwriter out){
+   public void drawSubscribe(HttpServletRequest req, PrintWriter out){
    		out.println("<form name=\"boardSearch\" action=Subscribe method=get>");
    		out.println("Enter board name to subscribe to: ");
    		out.println(",input type=text size=64 name=\"boardName\">");
@@ -64,7 +64,7 @@ public class Subscribe extends HttpServlet
    }
 
 
-   public void subscribeQuery(HttpServletRequest req, PrintWrite out, HttpServletResponse response) throws IOException
+   public void subscribeQuery(HttpServletRequest req, PrintWriter out, HttpServletResponse response) throws IOException
    {
 
    		String boardName = req.getParameter("boardName");
@@ -119,7 +119,7 @@ public class Subscribe extends HttpServlet
    		PrintWriter out = res.getWriter();
 
    		drawHeader(req, out);
-   		if (req.getParamater("Subscribe") == null){
+   		if (req.getParameter("Subscribe") == null){
    			drawSubscribe(req, out);
    		}
    		else{

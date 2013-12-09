@@ -111,6 +111,7 @@ public class LoginServlet extends HttpServlet
 
     public void drawLoginFail(HttpServletRequest req, PrintWriter out, boolean correctEmail)
     {
+        HttpSession session = req.getSession();
         session.setAttribute("email", null);
         session.setAttribute("username", null);
         drawHeader(req,out);
