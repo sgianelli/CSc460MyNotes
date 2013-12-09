@@ -119,7 +119,7 @@ public class Subscribe extends HttpServlet
    		PrintWriter out = res.getWriter();
 
    		drawHeader(req, out);
-   		if (req.getParameter("Subscribe") == null){
+   		if (req.getParameter("Subscribe") != null){
             out.println("IN HERE");
    			drawSubscribe(req, out);
    		}
