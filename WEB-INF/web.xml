@@ -28,6 +28,10 @@
 		<servlet-name>Subscribe</servlet-name>
 		<servlet-class>MyNotes.servlets.Subscribe</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>AddBoard</servlet-name>
+		<servlet-class>MyNotes.servlets.AddBoard</servlet-class>
+	</servlet>
 	<!--Map paths for servlets in the application-->
 
 	<servlet-mapping>
@@ -51,6 +55,10 @@
    <servlet-mapping>
    		<servlet-name>Subscribe</servlet-name>
    		<url-pattern>/Subscribe</url-pattern>
+   	</servlet-mapping>
+   	<servlet-mapping>
+   		<servlet-name>AddBoard</servlet-name>
+   		<url-pattern>/AddBoard</url-pattern>
    	</servlet-mapping>
 
 </web-app>
