@@ -16,7 +16,7 @@ public class Subscribe extends HttpServlet
 	public void drawHeader(HttpServletRequest req, PrintWriter out)
    {
       out.println("<html>");
-      out.println("<head><title>Find Boards</title></head>");
+      out.println("<head><title>Subscribe to a Board</title></head>");
 
       out.println("<body>");
       out.println("<p>");
@@ -120,9 +120,11 @@ public class Subscribe extends HttpServlet
 
    		drawHeader(req, out);
    		if (req.getParameter("Subscribe") == null){
+            out.println("IN HERE");
    			drawSubscribe(req, out);
    		}
    		else{
+            out.println("NOPE, IN HERE");
    			subscribeQuery(req, out, res);
    		}
    		drawFooter(req, out);
