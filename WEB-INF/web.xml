@@ -24,7 +24,10 @@
 		<servlet-name>FindBoards</servlet-name>
 		<servlet-class>MyNotes.servlets.FindBoards</servlet-class>
 	</servlet>
-
+	<servlet>
+		<servlet-name>Subscribe</servlet-name>
+		<servlet-class>MyNotes.servlets.Subscribe</servlet-class>
+	</servlet>
 	<!--Map paths for servlets in the application-->
 
 	<servlet-mapping>
@@ -45,6 +48,9 @@
         <servlet-name>AddCard</servlet-name>
         <url-pattern>/AddCard</url-pattern>
     </servlet-mapping> 
-   
+   <servlet-mapping>
+   		<servlet-name>Subscribe</servlet-name>
+   		<url-pattern>Subscribe</url-pattern>
+   	</servlet-mapping>
 
 </web-app>
