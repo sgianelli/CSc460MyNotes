@@ -50,7 +50,7 @@
     </servlet-mapping> 
    <servlet-mapping>
    		<servlet-name>Subscribe</servlet-name>
-   		<url-pattern>Subscribe</url-pattern>
+   		<url-pattern>/Subscribe</url-pattern>
    	</servlet-mapping>
 
 </web-app>
