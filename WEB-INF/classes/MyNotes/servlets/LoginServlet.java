@@ -59,6 +59,9 @@ public class LoginServlet extends HttpServlet
         out.println("</form align=\"left\">");
         out.println("</font>");
         out.println("</br>");
+        out.println("<form name=\"addUser\" action=AddProfileInformation method=get>");
+        out.println("<input type=submit name=\"addProfileInformation\" value=\"Add Profile Information to MyNotes\">");
+        out.println("</form>")
     }
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
     {
