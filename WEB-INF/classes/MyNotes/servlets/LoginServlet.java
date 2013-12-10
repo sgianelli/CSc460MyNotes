@@ -45,7 +45,21 @@ public class LoginServlet extends HttpServlet
         out.println("</html>");
     }
 
-
+    public void drawLogin(HttpServletRequest req, PrintWriter out){
+        out.println("</br>");
+        out.println("<font size=3 align=\"left\">");
+        out.println("<form name=\"login\" action=LoginServlet method=get>");
+        out.println("<label>Email:");
+        out.println("<input type=text name=\"email\"></br></br>");
+        out.println("</label>");
+        out.println("<label>Password:");
+        out.println("<input type=text name=\"password\"></br></br>");
+        out.println("</label>");
+        out.println("<input type=submit name=\"login\" value=\"login\">");
+        out.println("</form align=\"left\">");
+        out.println("</font>");
+        out.println("</br>");
+    }
     private void drawActiveOptions(HttpServletRequest req, PrintWriter out)
     {
 
@@ -101,7 +115,7 @@ public class LoginServlet extends HttpServlet
 
         out.println("<hr");
         out.println("<br><br>");
-        ;
+        drawLogin(req, out);
         // out.println("<form name=\"logout\" action=index.html>");
         // out.println("<input type=submit name=\"home\" value=\"Return to Main Menu\">");
         // out.println("</form>");
